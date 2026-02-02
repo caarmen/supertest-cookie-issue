@@ -16,19 +16,10 @@ Supertest lowercases the cookie name to `foo`, making it impossible to test cook
 
 ## Root Cause
 
-The bug is in `lib/cookies/assertion.js` at this line:
+The bug might be in `lib/cookies/assertion.js` at this line:
 
 ```javascript
 const key = part.substr(0, equalsIndex).trim().toLowerCase();
-```
-
-The `.toLowerCase()` call inappropriately converts the cookie name to lowercase.
-
-## Proposed Fix
-
-```diff
--      const key = part.substr(0, equalsIndex).trim().toLowerCase();
-+      const key = part.substr(0, equalsIndex).trim();
 ```
 
 Cookie names should be treated as case-sensitive according to [RFC 6265](https://datatracker.ietf.org/doc/html/rfc6265#section-5.2), and the parser should preserve the original case.
